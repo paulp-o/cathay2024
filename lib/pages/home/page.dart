@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: _sheetHeight.value > 0.95 ? Size.fromHeight(0) : Size.fromHeight(56),
         child: AnimatedOpacity(
           opacity: _isSheetVisible ? 0.0 : 1.0,
           duration: Duration(milliseconds: 300),
@@ -93,9 +93,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+                    margin: const EdgeInsets.only(bottom: 2.0),
                     decoration: BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(),
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 2.0,
+                        ),
                       ),
                     ),
                     child: InkWell(
@@ -146,10 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(20.0),
-              child: Container(),
-            ),
           ),
         ),
       ),
@@ -293,11 +293,13 @@ class BottomSheetContent extends StatelessWidget {
                   firstCurve: Curves.easeOut,
                   secondCurve: Curves.easeOut,
                   firstChild: Container(),
-                  secondChild: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      sheetController.animateTo(0.3, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
-                    },
+                  secondChild: InkWell(
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () {
+                        sheetController.animateTo(0.3, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+                      },
+                    ),
                   ),
                   crossFadeState: sheetHeight > 0.95 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
                   duration: Duration(milliseconds: 600),
@@ -312,22 +314,21 @@ class BottomSheetContent extends StatelessWidget {
                 ),
                 Spacer(),
 
-                // conditionally hide the close button when the sheet is fully expanded. use smooth animation
-                AnimatedCrossFade(
-                  sizeCurve: Curves.easeOut,
-                  firstCurve: Curves.easeOut,
-                  secondCurve: Curves.easeOut,
-                  secondChild: Container(),
-                  firstChild: IconButton(
-                    icon: Icon(Icons.close, color: Colors.white),
-                    onPressed: () {
-                      sheetController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
-                      onClose();
-                    },
-                  ),
-                  crossFadeState: sheetHeight > 0.95 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                // conditionally show the close button when the sheet is fully expanded. use smooth animation
+                AnimatedOpacity(
+                  opacity: sheetHeight > 0.95 ? 0.0 : 1.0,
                   duration: Duration(milliseconds: 600),
-                ),
+                  curve: Curves.easeOut,
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: Colors.white),
+                    onPressed: sheetHeight == 1
+                        ? null
+                        : () {
+                            sheetController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                            onClose();
+                          },
+                  ),
+                )
               ],
             ),
             SizedBox(height: 8.0),
