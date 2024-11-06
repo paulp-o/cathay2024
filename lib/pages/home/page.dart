@@ -80,76 +80,79 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: _sheetHeight.value > 0.95 ? Size.fromHeight(0) : Size.fromHeight(56),
+        preferredSize: _sheetHeight.value > 0.95 ? Size.fromHeight(0) : Size.fromHeight(kToolbarHeight),
         child: AnimatedOpacity(
           opacity: _isSheetVisible ? 0.0 : 1.0,
           duration: Duration(milliseconds: 300),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Row(
-              children: [
-                Clicky(
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
-                    margin: const EdgeInsets.only(bottom: 2.0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.black,
-                          width: 2.0,
+          child: IgnorePointer(
+            ignoring: _isSheetVisible,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: Row(
+                children: [
+                  Clicky(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+                      margin: const EdgeInsets.only(bottom: 2.0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2.0,
+                          ),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          // Handle the tap
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.search, color: Colors.black, size: 30),
+                            SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "TST",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 45,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    child: InkWell(
-                      onTap: () {
-                        // Handle the tap
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.search, color: Colors.black, size: 30),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "TST",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 45,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                  ),
+                ],
+              ),
+              actions: [
+                Container(
+                  margin: const EdgeInsets.only(right: 16.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.airplanemode_active,
+                      color: Colors.white,
                     ),
+                    iconSize: 30,
+                    style: ButtonStyle(),
+                    onPressed: () {
+                      // Handle settings button press
+                    },
                   ),
                 ),
               ],
             ),
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 16.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.airplanemode_active,
-                    color: Colors.white,
-                  ),
-                  iconSize: 30,
-                  style: ButtonStyle(),
-                  onPressed: () {
-                    // Handle settings button press
-                  },
-                ),
-              ),
-            ],
           ),
         ),
       ),
