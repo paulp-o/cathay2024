@@ -19,15 +19,31 @@ class _MyHomePageState extends State<MyHomePage> {
   String _sheetTitle = 'Place Name';
   String _sheetDescription = 'Detailed Address';
   LatLng _sheetPosition = LatLng(22.2968, 114.1722);
-  bool _isSheetVisible = false;
   final RxDouble _sheetHeight = 0.0.obs;
+  double _sheetState = 0.0;
 
   @override
   void initState() {
+    _sheetState = 0.0;
     super.initState();
     _sheetController.addListener(() {
       _sheetHeight.value = _sheetController.size;
+      // _checkSnapPoints();
     });
+  }
+
+  void _checkSnapPoints() {
+    if (_sheetController.size < 0.4) {
+      print('Bottom sheet snapped to 0.3');
+      _sheetHeight.value = _sheetState = 0.3;
+    } else if (_sheetController.size > 0.95) {
+      print('Bottom sheet snapped to 1.0');
+      _sheetHeight.value = _sheetState = 1.0;
+      // setState(() {
+      //   _sheetState = 1.0;
+      // });
+      // Add your custom logic here
+    }
   }
 
   void _incrementCounter() {
@@ -46,9 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _sheetTitle = title;
       _sheetDescription = description;
       _sheetPosition = position;
-      _isSheetVisible = true;
+      _sheetState = 0.3;
+      _sheetHeight.value = 0.3;
     });
-    _sheetController.animateTo(0.3, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    _sheetController.animateTo(0.3, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
   }
 
   @override
@@ -79,82 +96,66 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: _sheetHeight.value > 0.95 ? Size.fromHeight(0) : Size.fromHeight(kToolbarHeight),
-        child: AnimatedOpacity(
-          opacity: _isSheetVisible ? 0.0 : 1.0,
-          duration: Duration(milliseconds: 300),
-          child: IgnorePointer(
-            ignoring: _isSheetVisible,
-            child: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              title: Row(
-                children: [
-                  Clicky(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
-                      margin: const EdgeInsets.only(bottom: 2.0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black,
-                            width: 2.0,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Obx(() {
+          return AnimatedOpacity(
+            opacity: _sheetHeight.value > 0.50 ? 0.0 : 1.0,
+            duration: Duration(milliseconds: 300),
+            child: IgnorePointer(
+              ignoring: _sheetHeight.value > 0.55,
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                title: Row(
+                  children: [
+                    Clicky(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+                        margin: const EdgeInsets.only(bottom: 2.0),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.black,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            // Handle the tap
+                          },
+                          child: Row(
+                            children: [
+                              Icon(Icons.search, color: Colors.black, size: 30),
+                              SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "TST",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 45,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      child: InkWell(
-                        onTap: () {
-                          // Handle the tap
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.search, color: Colors.black, size: 30),
-                            SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "TST",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 45,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
-                  ),
-                ],
-              ),
-              actions: [
-                Container(
-                  margin: const EdgeInsets.only(right: 16.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.airplanemode_active,
-                      color: Colors.white,
-                    ),
-                    iconSize: 30,
-                    style: ButtonStyle(),
-                    onPressed: () {
-                      // Handle settings button press
-                    },
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
       body: Stack(
         children: [
@@ -167,38 +168,133 @@ class _MyHomePageState extends State<MyHomePage> {
             markers: markers,
           ),
           DraggableScrollableSheet(
+            snapAnimationDuration: const Duration(milliseconds: 300),
             controller: _sheetController,
-            initialChildSize: _isSheetVisible ? 0.3 : 0.0,
-            minChildSize: _isSheetVisible ? 0.3 : 0.0,
+            initialChildSize: _sheetState > 0.0 ? 0.3 : 0.0,
+            minChildSize: _sheetState > 0.0 ? 0.3 : 0.0,
             maxChildSize: 1,
             snap: true,
             snapSizes: [0.3, 1],
             shouldCloseOnMinExtent: false,
             builder: (BuildContext context, ScrollController scrollController) {
-              return Obx(() => BottomSheetContent(
-                    title: _sheetTitle,
-                    description: _sheetDescription,
-                    position: _sheetPosition,
-                    scrollController: scrollController,
-                    sheetController: _sheetController,
-                    onClose: () {
-                      setState(() {
-                        _isSheetVisible = false;
-                        // animate to 0.0 after 0.01 seconds to prevent flickering
-
-                        Future.delayed(Duration(milliseconds: 50), () {
-                          _sheetController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
-                        });
+              return Obx(() {
+                return BottomSheetContent(
+                  title: _sheetTitle,
+                  description: _sheetDescription,
+                  position: _sheetPosition,
+                  scrollController: scrollController,
+                  sheetController: _sheetController,
+                  onClose: () {
+                    setState(() {
+                      _sheetState = 0.0;
+                      _sheetHeight.value = 0.0;
+                      // animate to 0.0 after 0.01 seconds to prevent flickering
+                      Future.delayed(Duration(milliseconds: 50), () {
+                        _sheetController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
                       });
-                    },
-                    sheetHeight: _sheetHeight.value,
-                  ));
+                    });
+                  },
+                  sheetHeight: _sheetHeight.value,
+                );
+              });
             },
+          ),
+          Positioned(
+            right: 16.0,
+            top: 16.0 + kToolbarHeight,
+            child: AnimatedOpacity(
+              opacity: _sheetHeight.value > 0 ? 0.0 : 1.0,
+              duration: Duration(milliseconds: 300),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // chatbot icon button
+                  Container(
+                    margin: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: IconButton(
+                      icon: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat,
+                            color: Colors.white,
+                            size: 35, // Increase icon size
+                          ),
+                          Container(
+                            height: 16, // Set a fixed height
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                'Chat',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14, // Increase text size
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      iconSize: 50, // Increase button size
+                      style: ButtonStyle(),
+                      onPressed: () {
+                        // Handle chatbot button press
+                      },
+                    ),
+                  ),
+
+                  // plane icon button
+                  Container(
+                    margin: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: IconButton(
+                      icon: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.airplanemode_active,
+                            color: Colors.white,
+                            size: 35, // Increase icon size
+                          ),
+                          Container(
+                            height: 16, // Set a fixed height
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                'Flight',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14, // Increase text size
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      iconSize: 50, // Increase button size
+                      style: ButtonStyle(),
+                      onPressed: () {
+                        // Handle settings button press
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
       floatingActionButton: AnimatedOpacity(
-        opacity: _isSheetVisible ? 0.0 : 1.0,
+        opacity: _sheetState > 0.0 ? 0.0 : 1.0,
         duration: Duration(milliseconds: 300),
         child: FloatingActionButton.extended(
           onPressed: () {

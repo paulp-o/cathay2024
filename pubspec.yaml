@@ -37,6 +37,8 @@ dependencies:
   google_maps_flutter: ^2.9.0
   clicky_flutter: ^0.0.1
   get:
+  http: ^1.2.2
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
