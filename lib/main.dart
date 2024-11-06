@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/home/page.dart';
+import 'package:get/route_manager.dart';
+import 'pages/home/home_page.dart';
 import 'utils/file_downloader.dart';
 
 void main() {
@@ -9,18 +10,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'File Downloader',
       theme: ThemeData(
-        canvasColor: Colors.transparent,
-        scaffoldBackgroundColor: Colors.transparent,
-        bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: Colors.black.withOpacity(0),
-        ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromRGBO(0, 92, 99, 1),
-          brightness: Brightness.dark,
-          primary: Color.fromRGBO(0, 92, 99, 1),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(0, 92, 99, 1)),
+        primaryColor: Color.fromRGBO(0, 92, 99, 1),
+        primaryColorDark: Color.fromRGBO(0, 56, 64, 1),
+        primaryColorLight: Color.fromRGBO(76, 138, 143, 1),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color.fromRGBO(0, 92, 99, 1), // Primary color for buttons
+          textTheme: ButtonTextTheme.primary,
         ),
         useMaterial3: true,
       ),
