@@ -1,0 +1,576 @@
+[
+    {
+        "restaurant_name": "18 Grams Coffee & Veggie",
+        "menu_id": "18grams_causeway_coffee_veg",
+        "cuisine_type": "Coffee & Vegetarian",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Flat White",
+                "description": "Smooth and creamy espresso with steamed milk.",
+                "price": 38
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Iced Matcha Latte",
+                "description": "Refreshing iced latte with organic matcha and plant-based milk options.",
+                "price": 45
+            },
+            {
+                "category": "Main",
+                "item_name": "Avocado Toast",
+                "description": "Wholegrain toast topped with mashed avocado, cherry tomatoes, and microgreens.",
+                "price": 58
+            },
+            {
+                "category": "Main",
+                "item_name": "Vegan Buddha Bowl",
+                "description": "A nourishing bowl with quinoa, roasted vegetables, chickpeas, and tahini dressing.",
+                "price": 78
+            },
+            {
+                "category": "Side",
+                "item_name": "Sweet Potato Fries",
+                "description": "Crispy and lightly seasoned sweet potato fries served with vegan aioli.",
+                "price": 32
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Vegan Chocolate Brownie",
+                "description": "Rich, gooey brownie made with vegan chocolate and topped with walnuts.",
+                "price": 42
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Banana Bread",
+                "description": "Moist banana bread slice, served with a side of coconut cream.",
+                "price": 35
+            }
+        ]
+    },
+    {
+        "restaurant_name": "181 Fortnum & Mason",
+        "menu_id": "fortnum_mason_tst_british",
+        "cuisine_type": "British",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Earl Grey Tea",
+                "description": "Classic British black tea infused with bergamot for a refreshing citrus note.",
+                "price": 48
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Pimm's Cocktail",
+                "description": "Traditional British cocktail with Pimm's No.1, lemonade, and fresh fruits.",
+                "price": 88
+            },
+            {
+                "category": "Main",
+                "item_name": "Fish and Chips",
+                "description": "Golden battered fish served with thick-cut chips, mushy peas, and tartar sauce.",
+                "price": 128
+            },
+            {
+                "category": "Main",
+                "item_name": "Beef Wellington",
+                "description": "Tender beef fillet wrapped in puff pastry with mushroom duxelles and served with a red wine jus.",
+                "price": 198
+            },
+            {
+                "category": "Side",
+                "item_name": "Yorkshire Pudding",
+                "description": "Traditional baked pudding made from batter, a British favorite.",
+                "price": 28
+            },
+            {
+                "category": "Side",
+                "item_name": "Mashed Potatoes",
+                "description": "Creamy mashed potatoes with butter and a hint of nutmeg.",
+                "price": 35
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Sticky Toffee Pudding",
+                "description": "Rich, moist cake served with a warm toffee sauce and vanilla ice cream.",
+                "price": 68
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Scones with Clotted Cream and Jam",
+                "description": "Classic British scones served with clotted cream and strawberry jam.",
+                "price": 55
+            }
+        ]
+    },
+    {
+        "restaurant_name": "A Tavola Restaurant",
+        "menu_id": "a_tavola_tungchung_italian",
+        "cuisine_type": "Italian",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Aperol Spritz",
+                "description": "A refreshing Italian cocktail with Aperol, prosecco, and a splash of soda.",
+                "price": 78
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Espresso",
+                "description": "Rich and bold Italian espresso shot, perfect after a meal.",
+                "price": 28
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Bruschetta al Pomodoro",
+                "description": "Grilled bread topped with fresh tomatoes, garlic, basil, and olive oil.",
+                "price": 48
+            },
+            {
+                "category": "Main",
+                "item_name": "Margherita Pizza",
+                "description": "Classic Italian pizza with tomato sauce, fresh mozzarella, and basil.",
+                "price": 98
+            },
+            {
+                "category": "Main",
+                "item_name": "Spaghetti Carbonara",
+                "description": "Traditional Roman pasta with pancetta, egg, Parmesan, and black pepper.",
+                "price": 108
+            },
+            {
+                "category": "Main",
+                "item_name": "Lasagna",
+                "description": "Layers of pasta, meat sauce, ricotta, and mozzarella cheese baked to perfection.",
+                "price": 118
+            },
+            {
+                "category": "Side",
+                "item_name": "Garlic Bread",
+                "description": "Toasted Italian bread with garlic and herbs.",
+                "price": 32
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Tiramisu",
+                "description": "Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cream.",
+                "price": 58
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Panna Cotta",
+                "description": "Creamy vanilla panna cotta served with a berry compote.",
+                "price": 52
+            }
+        ]
+    },
+    {
+        "restaurant_name": "Acquasala",
+        "menu_id": "acquasala_central_italian",
+        "cuisine_type": "Italian",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Negroni",
+                "description": "Classic Italian cocktail with gin, Campari, and sweet vermouth.",
+                "price": 85
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Limoncello Spritz",
+                "description": "Refreshing cocktail made with limoncello, prosecco, and soda water.",
+                "price": 80
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Caprese Salad",
+                "description": "Fresh tomatoes, mozzarella, and basil drizzled with olive oil and balsamic glaze.",
+                "price": 68
+            },
+            {
+                "category": "Main",
+                "item_name": "Risotto ai Funghi",
+                "description": "Creamy risotto with porcini mushrooms, Parmesan, and truffle oil.",
+                "price": 128
+            },
+            {
+                "category": "Main",
+                "item_name": "Tagliatelle al Tartufo",
+                "description": "Homemade tagliatelle pasta tossed in a rich truffle cream sauce.",
+                "price": 138
+            },
+            {
+                "category": "Main",
+                "item_name": "Saltimbocca alla Romana",
+                "description": "Tender veal cutlets topped with prosciutto and sage in a white wine sauce.",
+                "price": 158
+            },
+            {
+                "category": "Side",
+                "item_name": "Polenta Fries",
+                "description": "Crispy polenta fries served with a side of marinara sauce.",
+                "price": 48
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Cannoli Siciliani",
+                "description": "Crispy pastry shells filled with sweet ricotta cream and chocolate chips.",
+                "price": 58
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Affogato",
+                "description": "A scoop of vanilla gelato ‘drowned’ in a shot of hot espresso.",
+                "price": 45
+            }
+        ]
+    },
+    {
+        "restaurant_name": "Ah Yat Harbour View Restaurant",
+        "menu_id": "ahyat_harbourview_tst_chinese",
+        "cuisine_type": "Chinese",
+        "menu": [
+            {
+                "category": "Appetizer",
+                "item_name": "Jellyfish Salad",
+                "description": "Chilled marinated jellyfish with a light sesame dressing.",
+                "price": 88
+            },
+            {
+                "category": "Soup",
+                "item_name": "Braised Shark Fin Soup",
+                "description": "Traditional Cantonese soup with delicate shark fin in a rich broth.",
+                "price": 380
+            },
+            {
+                "category": "Main",
+                "item_name": "Ah Yat Abalone",
+                "description": "Signature braised abalone in a flavorful oyster sauce, cooked to perfection.",
+                "price": 580
+            },
+            {
+                "category": "Main",
+                "item_name": "Stewed Oxtail in Homemade Sauce",
+                "description": "Tender stewed oxtail served in a rich, savory sauce with vegetables.",
+                "price": 168
+            },
+            {
+                "category": "Main",
+                "item_name": "Golden Fried Crispy Chicken",
+                "description": "Crispy fried chicken with a golden crust, seasoned with special spices.",
+                "price": 148
+            },
+            {
+                "category": "Dim Sum",
+                "item_name": "Shrimp Dumplings (Har Gow)",
+                "description": "Classic dim sum with plump shrimp wrapped in delicate rice flour skin.",
+                "price": 42
+            },
+            {
+                "category": "Dim Sum",
+                "item_name": "Barbecued Pork Buns",
+                "description": "Steamed buns filled with sweet and savory barbecued pork.",
+                "price": 38
+            },
+            {
+                "category": "Side",
+                "item_name": "Stir-Fried Seasonal Vegetables",
+                "description": "Fresh seasonal vegetables stir-fried with garlic and light soy sauce.",
+                "price": 68
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Mango Pudding",
+                "description": "Smooth mango-flavored pudding topped with fresh mango pieces.",
+                "price": 48
+            }
+        ]
+    },
+    {
+        "restaurant_name": "Akanoshou",
+        "menu_id": "akanoshou_cwb_japanese",
+        "cuisine_type": "Japanese",
+        "menu": [
+            {
+                "category": "Appetizer",
+                "item_name": "Edamame",
+                "description": "Lightly salted steamed edamame beans.",
+                "price": 38
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Tuna Tataki",
+                "description": "Seared tuna slices with ponzu sauce and fresh garnishes.",
+                "price": 98
+            },
+            {
+                "category": "Sushi",
+                "item_name": "Salmon Nigiri",
+                "description": "Fresh salmon over sushi rice, served with wasabi and soy sauce.",
+                "price": 48
+            },
+            {
+                "category": "Sushi",
+                "item_name": "Assorted Sashimi Platter",
+                "description": "Chef's selection of fresh sashimi including tuna, salmon, and yellowtail.",
+                "price": 198
+            },
+            {
+                "category": "Main",
+                "item_name": "Wagyu Beef Sukiyaki",
+                "description": "Premium wagyu beef slices cooked in a sweet and savory sukiyaki broth.",
+                "price": 288
+            },
+            {
+                "category": "Main",
+                "item_name": "Chicken Katsu Curry",
+                "description": "Crispy fried chicken cutlet served with Japanese curry and steamed rice.",
+                "price": 128
+            },
+            {
+                "category": "Side",
+                "item_name": "Miso Soup",
+                "description": "Traditional miso soup with tofu, seaweed, and green onions.",
+                "price": 28
+            },
+            {
+                "category": "Side",
+                "item_name": "Steamed Rice",
+                "description": "Bowl of fluffy steamed Japanese rice.",
+                "price": 20
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Matcha Ice Cream",
+                "description": "Creamy green tea ice cream with a hint of sweetness.",
+                "price": 42
+            }
+        ]
+    },
+    {
+        "restaurant_name": "Alibi – Wine Dine Be Social",
+        "menu_id": "alibi_mongkok_international",
+        "cuisine_type": "International",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Signature Sangria",
+                "description": "Red wine-based cocktail with fresh fruit and a hint of brandy.",
+                "price": 78
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Truffle Fries",
+                "description": "Crispy fries tossed in truffle oil, topped with Parmesan cheese.",
+                "price": 68
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Charcuterie Board",
+                "description": "Selection of cured meats, cheeses, olives, and house-made pickles.",
+                "price": 168
+            },
+            {
+                "category": "Main",
+                "item_name": "Grilled Australian Ribeye",
+                "description": "Succulent ribeye steak grilled to perfection, served with mashed potatoes and seasonal vegetables.",
+                "price": 298
+            },
+            {
+                "category": "Main",
+                "item_name": "Seafood Paella",
+                "description": "Traditional Spanish rice dish with saffron, prawns, mussels, and calamari.",
+                "price": 228
+            },
+            {
+                "category": "Main",
+                "item_name": "Vegetarian Buddha Bowl",
+                "description": "Healthy bowl with quinoa, roasted vegetables, avocado, and tahini dressing.",
+                "price": 128
+            },
+            {
+                "category": "Side",
+                "item_name": "Garlic Bread",
+                "description": "Toasted bread slices brushed with garlic butter and herbs.",
+                "price": 32
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Chocolate Fondant",
+                "description": "Warm chocolate cake with a molten center, served with vanilla ice cream.",
+                "price": 78
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Tiramisu",
+                "description": "Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone.",
+                "price": 58
+            }
+        ]
+    },
+    {
+        "restaurant_name": "ALTO Bar & Grill",
+        "menu_id": "alto_cwb_steakhouse",
+        "cuisine_type": "Steakhouse",
+        "menu": [
+            {
+                "category": "Appetizer",
+                "item_name": "Watermelon Salad",
+                "description": "Refreshing watermelon cubes with feta cheese, mint, and a balsamic glaze.",
+                "price": 98
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Bonito Fried Duck Leg Salad",
+                "description": "Crispy duck leg served over mixed greens with a light vinaigrette.",
+                "price": 128
+            },
+            {
+                "category": "Main",
+                "item_name": "Josper-Cooked Steak",
+                "description": "Premium cut steak grilled to perfection in a Josper oven, served with your choice of sauce.",
+                "price": 328
+            },
+            {
+                "category": "Main",
+                "item_name": "Beef Wellington",
+                "description": "Tender beef fillet wrapped in puff pastry with mushroom duxelles, served with a red wine jus.",
+                "price": 368
+            },
+            {
+                "category": "Side",
+                "item_name": "Black Truffle Fries",
+                "description": "Crispy fries tossed in truffle oil and topped with grated Parmesan.",
+                "price": 78
+            },
+            {
+                "category": "Side",
+                "item_name": "Grilled Asparagus",
+                "description": "Char-grilled asparagus spears drizzled with lemon butter.",
+                "price": 68
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Sticky Toffee Pudding",
+                "description": "Warm sponge cake soaked in toffee sauce, served with vanilla ice cream.",
+                "price": 88
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Chocolate Fondant",
+                "description": "Molten chocolate cake with a gooey center, accompanied by raspberry coulis.",
+                "price": 98
+            }
+        ]
+    },
+    {
+        "restaurant_name": "APT Coffee",
+        "menu_id": "apt_coffee_wanchai_coffee",
+        "cuisine_type": "Coffee",
+        "menu": [
+            {
+                "category": "Drinks",
+                "item_name": "Flat White",
+                "description": "Smooth espresso with velvety steamed milk.",
+                "price": 38
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Hojicha Latte",
+                "description": "Roasted green tea blended with steamed milk.",
+                "price": 42
+            },
+            {
+                "category": "Drinks",
+                "item_name": "Iced Matcha Latte",
+                "description": "Chilled matcha with milk over ice.",
+                "price": 45
+            },
+            {
+                "category": "Toast Tailoring",
+                "item_name": "Sourdough Toast with Avocado and Scrambled Eggs",
+                "description": "Customizable toast with fresh avocado and creamy scrambled eggs.",
+                "price": 105
+            },
+            {
+                "category": "Toast Tailoring",
+                "item_name": "Fig & Walnut Bread with Smoked Salmon and Cream Cheese",
+                "description": "Artisan bread topped with smoked salmon and lemon cream cheese.",
+                "price": 120
+            },
+            {
+                "category": "Salads",
+                "item_name": "Quinoa Salad with Roasted Vegetables",
+                "description": "Nutritious quinoa mixed with seasonal roasted veggies.",
+                "price": 98
+            },
+            {
+                "category": "Desserts",
+                "item_name": "Lemon Pie",
+                "description": "Tangy lemon filling in a buttery crust.",
+                "price": 48
+            },
+            {
+                "category": "Desserts",
+                "item_name": "Fruitcake",
+                "description": "Moist cake loaded with dried fruits and nuts.",
+                "price": 52
+            }
+        ]
+    },
+    {
+        "restaurant_name": "Arirang Korean Restaurant",
+        "menu_id": "arirang_wanchai_korean",
+        "cuisine_type": "Korean",
+        "menu": [
+            {
+                "category": "Appetizer",
+                "item_name": "Kimchi Pancake (Kimchi Jeon)",
+                "description": "Savory pancake made with fermented kimchi and scallions.",
+                "price": 80
+            },
+            {
+                "category": "Appetizer",
+                "item_name": "Japchae",
+                "description": "Stir-fried glass noodles with assorted vegetables and beef.",
+                "price": 90
+            },
+            {
+                "category": "Main",
+                "item_name": "Bulgogi",
+                "description": "Marinated slices of beef grilled to perfection, served with rice.",
+                "price": 150
+            },
+            {
+                "category": "Main",
+                "item_name": "Spicy Pork BBQ (Dwaeji Bulgogi)",
+                "description": "Spicy marinated pork slices grilled and served with lettuce wraps.",
+                "price": 140
+            },
+            {
+                "category": "Main",
+                "item_name": "Bibimbap",
+                "description": "Mixed rice with vegetables, beef, and a fried egg, served in a hot stone bowl.",
+                "price": 120
+            },
+            {
+                "category": "Soup",
+                "item_name": "Kimchi Jjigae",
+                "description": "Spicy kimchi stew with tofu, pork, and vegetables.",
+                "price": 100
+            },
+            {
+                "category": "Side",
+                "item_name": "Kimchi",
+                "description": "Traditional fermented cabbage with spicy seasoning.",
+                "price": 30
+            },
+            {
+                "category": "Dessert",
+                "item_name": "Hotteok",
+                "description": "Sweet Korean pancakes filled with brown sugar, honey, and nuts.",
+                "price": 50
+            }
+        ]
+    }
+]

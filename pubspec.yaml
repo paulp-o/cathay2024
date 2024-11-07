@@ -69,6 +69,7 @@ flutter:
     - assets/restaurant_data.csv
     - assets/custom_marker.png
     - assets/custom_marker_cluster.png
+    - assets/restaurant_menu_data.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
