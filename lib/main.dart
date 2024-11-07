@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.black.withOpacity(0),
         ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromRGBO(0, 92, 99, 1),
+          seedColor: const Color.fromRGBO(0, 92, 99, 1),
           brightness: Brightness.dark,
-          primary: Color.fromRGBO(0, 92, 99, 1),
+          primary: const Color.fromRGBO(0, 92, 99, 1),
         ),
         useMaterial3: true,
       ),
