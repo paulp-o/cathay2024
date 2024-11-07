@@ -42,6 +42,9 @@ dependencies:
   geolocator: ^13.0.1
   flutter_zxing: ^1.7.0
   shared_preferences: ^2.3.2
+  google_generative_ai: ^0.4.6
+  image_picker: ^1.0.7
+  flutter_markdown: ^0.7.4+1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +72,8 @@ flutter:
     - assets/airportdb.txt
     - assets/illustration1.png
     - assets/illustration2.png
+    - assets/models/best_food_model.pth
+    - assets/labels/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
