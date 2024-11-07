@@ -15,23 +15,18 @@ class GeminiService {
     try {
       final prompt = '''
 Based on this travel context:
-- Destination: ${travelData?['destination'] ?? 'Hong Kong'}
-- Arrival: ${travelData?['arrival'] ?? '8:00 PM'}
-
-Generate 5 short, engaging questions that users might want to ask about local food and dining. Make questions specific to ${travelData?['destination'] ?? 'Hong Kong'}.
+${travelData != null ? travelData.entries.map((entry) => '- ${entry.key}: ${entry.value}').join('\n') : '- No travel data provided'}
+Generate 5 short, engaging questions that users might want to ask about local food and dining. Make questions specific to the given context.
 ''';
 
       final content = [Content.text(prompt)];
       final response = await _model.generateContent(content);
-      
+
       if (response.text == null) {
         return _getDefaultQuestions();
       }
 
-      final questions = response.text!.split('\n')
-          .where((line) => line.trim().isNotEmpty)
-          .take(5)
-          .toList();
+      final questions = response.text!.split('\n').where((line) => line.trim().isNotEmpty).take(5).toList();
 
       return questions.isEmpty ? _getDefaultQuestions() : questions;
     } catch (e) {
@@ -54,8 +49,7 @@ Generate 5 short, engaging questions that users might want to ask about local fo
     try {
       final contextPrompt = '''
 Travel Context:
-- Destination: ${travelData?['destination'] ?? 'Hong Kong'}
-- Arrival: ${travelData?['arrival'] ?? '8:00 PM'}
+${travelData != null ? travelData.entries.map((entry) => '- ${entry.key}: ${entry.value}').join('\n') : '- No travel data provided'}
 
 User Query: $prompt
 
@@ -80,4 +74,4 @@ I apologize, but there was an error processing your request. Please try again la
 ''';
     }
   }
-} 
+}

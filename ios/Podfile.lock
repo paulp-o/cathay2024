@@ -71,6 +71,6 @@ SPEC CHECKSUMS:
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
 
-PODFILE CHECKSUM: 47f3a4e7ccfbfdd18dd7fb4f1503748394cab419
+PODFILE CHECKSUM: fa96c0bb736b54b3ae63f393763914bf851c003c
 
 COCOAPODS: 1.15.2

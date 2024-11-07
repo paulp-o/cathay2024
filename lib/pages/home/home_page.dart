@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cathay2024/screens/chat_screen.dart';
 import 'package:clicky_flutter/clicky_flutter.dart';
 import 'package:clicky_flutter/styles.dart';
 import 'package:flutter/material.dart';
@@ -531,8 +532,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         iconSize: 50, // Increase button size
                         style: ButtonStyle(),
-                        onPressed: () {
-                          // Handle chatbot button press
+                        onPressed: () async {
+                          final prefs = await SharedPreferences.getInstance();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                final travelData = {
+                                  'departureAirport': prefs.getString('departureAirport'),
+                                  'arrivalAirport': prefs.getString('arrivalAirport'),
+                                  'departureDate': prefs.getString('departureDate'),
+                                  'lastDate': prefs.getString('lastDate'),
+                                  'name': prefs.getString('name'),
+                                  'selectedRegion': _selectedRegion,
+                                };
+
+                                // Remove null values
+                                travelData.removeWhere((key, value) => value == null);
+
+                                return ChatScreen(travelData: travelData);
+                              },
+                            ),
+                          );
                         },
                       ),
                     ),

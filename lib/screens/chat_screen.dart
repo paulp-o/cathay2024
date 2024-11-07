@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         _messages.insert(0, ChatMessage(response, false));
       });
-      
+
       _loadGuideQuestions();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,14 +68,16 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    
+
     if (image != null) {
       setState(() {
-        _messages.insert(0, ChatMessage(
-          'Sent an image',
-          true,
-          imageUrl: image.path,
-        ));
+        _messages.insert(
+            0,
+            ChatMessage(
+              'Sent an image',
+              true,
+              imageUrl: image.path,
+            ));
       });
     }
   }
@@ -94,6 +96,20 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
+          // if trip mode isn't enabled, show a text
+          if (widget.travelData?['departureAirport'] == null)
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Colors.yellow[100],
+              child: Text(
+                "Trip mode isn't enabled. To get the best experience, please enable trip mode from the home screen.",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+            ),
           Expanded(
             child: ListView.builder(
               reverse: true,
@@ -197,53 +213,58 @@ class _ChatScreenState extends State<ChatScreen> {
           top: BorderSide(color: Colors.grey[200]!),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Text(
-              'Suggested Questions',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                color: Theme.of(context).primaryColor,
-                letterSpacing: 0.5,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.35,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                'Suggested Questions',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Theme.of(context).primaryColor,
+                  letterSpacing: 0.5,
+                ),
               ),
             ),
-          ),
-          ...guideQuestions.map((question) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: InkWell(
-                onTap: () => _handleGuideQuestion(question),
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE0F2F3),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFF005E62).withOpacity(0.1),
+            ...guideQuestions.map((question) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: InkWell(
+                  onTap: () => _handleGuideQuestion(question),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
                     ),
-                  ),
-                  child: Text(
-                    question,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF005E62),
-                      height: 1.4,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0F2F3),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFF005E62).withOpacity(0.1),
+                      ),
+                    ),
+                    child: Text(
+                      question,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF005E62),
+                        height: 1.4,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }).toList(),
-        ],
+              );
+            }).toList(),
+          ],
+        ),
       ),
     );
   }
@@ -313,10 +334,10 @@ class ChatBubble extends StatelessWidget {
                     width: double.infinity,
                   ),
                 ),
-              if (imageUrl != null && message.isNotEmpty)
-                const SizedBox(height: 8),
+              if (imageUrl != null && message.isNotEmpty) const SizedBox(height: 8),
               if (message.isNotEmpty)
                 Markdown(
+                  physics: ClampingScrollPhysics(),
                   data: message,
                   shrinkWrap: true,
                   styleSheet: MarkdownStyleSheet(
@@ -345,4 +366,4 @@ class ChatBubble extends StatelessWidget {
       ),
     );
   }
-} 
+}
