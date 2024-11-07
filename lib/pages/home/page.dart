@@ -11,11 +11,11 @@ import 'package:cathay2024/models/restaurant.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  final String title;
+//   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
 class _MyHomePageState extends State<MyHomePage> {
   late GoogleMapController _mapController;
@@ -104,9 +104,9 @@ Future<BitmapDescriptor> resizeMapIcon(String assetPath, int width, int height) 
   return BitmapDescriptor.fromBytes(resizedData!.buffer.asUint8List());
 }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
-  }
+//   void _onMapCreated(GoogleMapController controller) {
+//     _mapController = controller;
+//   }
 
   void _moveCamera(LatLng position, String title, String description) {
     _mapController.animateCamera(CameraUpdate.newLatLng(position));
