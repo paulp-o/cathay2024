@@ -22,6 +22,8 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
         useMaterial3: true,
+        // disable splash effect
+        splashFactory: NoSplash.splashFactory,
       ),
       home: LoadingScreen(),
     );

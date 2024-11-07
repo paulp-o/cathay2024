@@ -1,12 +1,16 @@
 import 'dart:math';
 
 import 'package:clicky_flutter/clicky_flutter.dart';
+import 'package:clicky_flutter/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../region_selection/region_selection_page.dart';
+import '../trip_info/trip_info_page.dart';
 import 'bottom_sheet_content.dart';
+import '../trip_info/input_trip_info_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -30,14 +34,22 @@ class _MyHomePageState extends State<MyHomePage> {
   LatLng _selectedLatLng = LatLng(22.2976, 114.1722);
   TextEditingController searchController = TextEditingController();
   String _nearestRegion = '';
+  bool _isTripMode = false;
 
   @override
   void initState() {
-    _sheetState = 0.0;
     super.initState();
+    _sheetState = 0.0;
     _sheetController.addListener(() {
       _sheetHeight.value = _sheetController.size;
-      // _checkSnapPoints();
+    });
+    _checkTripMode();
+  }
+
+  Future<void> _checkTripMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isTripMode = prefs.getBool('tripModeEnabled') ?? false;
     });
   }
 
@@ -169,30 +181,91 @@ class _MyHomePageState extends State<MyHomePage> {
     _moveCamera(currentLatLng, 'Current Position', 'You are here', triggerSheet: false);
   }
 
+  void _toggleTripMode() async {
+    if (!_isTripMode) {
+      final result = await Get.to(() => InputTripInfoPage());
+      if (result != null && result['enabled']) {
+        setState(() {
+          _isTripMode = true;
+        });
+      }
+    } else {
+      bool confirmDisable = await _showDisableTripModeDialog();
+      if (confirmDisable) {
+        // remove trip info from shared preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove('name');
+        await prefs.remove('departureAirport');
+        await prefs.remove('arrivalAirport');
+        await prefs.remove('departureDate');
+        await prefs.remove('lastDate');
+        // set trip mode to false
+        await prefs.setBool('tripModeEnabled', false);
+        setState(() {
+          _isTripMode = false;
+        });
+      }
+    }
+  }
+
+  Future<bool> _showDisableTripModeDialog() async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Disable Trip Mode'),
+              content: Text(
+                  'Are you sure you want to disable trip mode? You will need to enter all trip information again to re-enable it.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: Text('Disable'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  void _navigateToTripInfoPage() async {
+    await Get.to(() => TripInfoPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     Set<Marker> markers = {
-      Marker(
-        markerId: MarkerId('marker1'),
-        position: LatLng(22.297, 114.172),
-        onTap: () {
-          _moveCamera(LatLng(22.297, 114.172), 'Marker 1', 'This is marker 1');
-        },
-      ),
-      Marker(
-        markerId: MarkerId('marker2'),
-        position: LatLng(22.296, 114.173),
-        onTap: () {
-          _moveCamera(LatLng(22.296, 114.173), 'Marker 2', 'This is marker 2');
-        },
-      ),
-      Marker(
-        markerId: MarkerId('marker3'),
-        position: LatLng(22.295, 114.171),
-        onTap: () {
-          _moveCamera(LatLng(22.295, 114.171), 'Marker 3', 'This is marker 3');
-        },
-      ),
+      if (_isTripMode) ...[
+        Marker(
+          markerId: MarkerId('marker1'),
+          position: LatLng(22.297, 114.172),
+          onTap: () {
+            _moveCamera(LatLng(22.297, 114.172), 'Marker 1', 'This is marker 1');
+          },
+        ),
+        Marker(
+          markerId: MarkerId('marker2'),
+          position: LatLng(22.296, 114.173),
+          onTap: () {
+            _moveCamera(LatLng(22.296, 114.173), 'Marker 2', 'This is marker 2');
+          },
+        ),
+        Marker(
+          markerId: MarkerId('marker3'),
+          position: LatLng(22.295, 114.171),
+          onTap: () {
+            _moveCamera(LatLng(22.295, 114.171), 'Marker 3', 'This is marker 3');
+          },
+        ),
+      ]
     };
 
     return Scaffold(
@@ -256,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 30,
+                                        fontSize: 40,
                                         shadows: [
                                           BoxShadow(color: Colors.black.withOpacity(0.2), offset: Offset(0, 2), blurRadius: 2)
                                         ],
@@ -325,91 +398,143 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           Positioned(
-            right: 16.0,
-            top: 16.0 + kToolbarHeight,
+            left: 16.0,
+            top: 16.0 + kToolbarHeight * 2,
             child: AnimatedOpacity(
               opacity: _sheetHeight.value > 0 ? 0.0 : 1.0,
               duration: Duration(milliseconds: 300),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // chatbot icon button
-                  Container(
-                    margin: const EdgeInsets.all(8.0),
-                    padding: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: IconButton(
-                      icon: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chat,
-                            color: Colors.white,
-                            size: 35, // Increase icon size
+                  InkWell(
+                    onTap: _toggleTripMode,
+                    child: Clicky(
+                      style: ClickyStyle(color: Colors.transparent),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: _isTripMode ? null : Colors.white,
+                          gradient: _isTripMode
+                              ? LinearGradient(
+                                  colors: [Colors.blue, Colors.purple],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                )
+                              : null,
+                          borderRadius: BorderRadius.circular(30.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.black.withOpacity(0.2),
+                            width: _isTripMode ? 2.0 : 1.0,
                           ),
-                          Container(
-                            height: 16, // Set a fixed height
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                'Chat',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14, // Increase text size
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  _isTripMode ? Icons.airplanemode_active : Icons.airplanemode_inactive,
+                                  color: _isTripMode ? Colors.white : Colors.black,
                                 ),
+                                SizedBox(width: 8),
+                                Switch(
+                                  value: _isTripMode,
+                                  onChanged: (value) {
+                                    _toggleTripMode();
+                                  },
+                                  inactiveThumbColor: Colors.grey,
+                                  inactiveTrackColor: Colors.grey.withOpacity(0.5),
+                                  activeColor: _isTripMode ? Colors.white : Theme.of(context).colorScheme.primary,
+                                  activeTrackColor: _isTripMode
+                                      ? Colors.white.withOpacity(0.5)
+                                      : Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              _isTripMode ? 'Trip Mode ON!' : 'Trip Mode',
+                              style: TextStyle(
+                                color: _isTripMode ? Colors.white : Colors.black,
+                                fontWeight: _isTripMode ? FontWeight.bold : FontWeight.normal,
+                                fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
                               ),
                             ),
-                          ),
-                        ],
+                            if (_isTripMode)
+                              OutlinedButton(
+                                onPressed: _navigateToTripInfoPage,
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: Colors.white),
+                                ),
+                                child: Text(
+                                  'View Trip Info',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                      iconSize: 50, // Increase button size
-                      style: ButtonStyle(),
-                      onPressed: () {
-                        // Handle chatbot button press
-                      },
                     ),
                   ),
-
-                  // plane icon button
-                  Container(
-                    margin: const EdgeInsets.all(8.0),
-                    padding: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: IconButton(
-                      icon: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.airplanemode_active,
-                            color: Colors.white,
-                            size: 35, // Increase icon size
+                  SizedBox(height: 0),
+                  Clicky(
+                    style: ClickyStyle(color: Colors.transparent),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      margin: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            offset: Offset(0, 2),
+                            blurRadius: 2,
                           ),
-                          Container(
-                            height: 16, // Set a fixed height
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(
-                                'Flight',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14, // Increase text size
+                        ],
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      child: IconButton(
+                        //shadow
+
+                        icon: Column(
+                          children: [
+                            Icon(
+                              Icons.chat,
+                              color: Colors.white,
+                              size: 35, // Increase icon size
+                            ),
+                            Container(
+                              height: 16, // Set a fixed height
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  'Chat',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14, // Increase text size
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        iconSize: 50, // Increase button size
+                        style: ButtonStyle(),
+                        onPressed: () {
+                          // Handle chatbot button press
+                        },
                       ),
-                      iconSize: 50, // Increase button size
-                      style: ButtonStyle(),
-                      onPressed: () {
-                        // Handle settings button press
-                      },
                     ),
                   ),
                 ],
@@ -421,13 +546,6 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // FloatingActionButton(
-          //   heroTag: 'currentLocation',
-          //   onPressed: _getCurrentLocation,
-          //   child: Icon(Icons.my_location),
-          //   backgroundColor: Theme.of(context).colorScheme.primary,
-          // ),
-          SizedBox(height: 16),
           AnimatedOpacity(
             opacity: _sheetState > 0.0 ? 0.0 : 1.0,
             duration: Duration(milliseconds: 300),
