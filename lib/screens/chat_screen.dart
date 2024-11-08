@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../services/gemini_service.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
   final Map<String, dynamic>? travelData;
@@ -18,19 +21,16 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final GeminiService _geminiService = GeminiService();
   bool _isLoading = false;
-  List<String> guideQuestions = [];
+  late Future<List<String>> _guideQuestionsFuture;
 
   @override
   void initState() {
     super.initState();
-    _loadGuideQuestions();
+    _guideQuestionsFuture = _loadGuideQuestions();
   }
 
-  Future<void> _loadGuideQuestions() async {
-    final questions = await _geminiService.generateGuideQuestions(widget.travelData);
-    setState(() {
-      guideQuestions = questions;
-    });
+  Future<List<String>> _loadGuideQuestions() async {
+    return await _geminiService.generateGuideQuestions(widget.travelData);
   }
 
   void _sendMessage() async {
@@ -51,9 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         _messages.insert(0, ChatMessage(response, false));
+        _guideQuestionsFuture = _loadGuideQuestions();
       });
-
-      _loadGuideQuestions();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
@@ -79,7 +78,37 @@ class _ChatScreenState extends State<ChatScreen> {
               imageUrl: image.path,
             ));
       });
+
+      final foodDescription = await _sendImageToServer(image.path);
+      if (foodDescription != null) {
+        _messageController.text = "What can you tell me about this food: $foodDescription?";
+        _sendMessage();
+      }
     }
+  }
+
+  Future<String?> _sendImageToServer(String imagePath) async {
+    final url = Uri.parse('http://192.168.31.59:8000/predict/'); // Ensure the URL ends with a trailing slash
+    final request = http.MultipartRequest('POST', url)..files.add(await http.MultipartFile.fromPath('file', imagePath));
+
+    try {
+      final response = await request.send();
+      if (response.statusCode == 200) {
+        final responseBody = await response.stream.bytesToString();
+        // Assuming the server returns a JSON object with a 'description' field
+        final description = jsonDecode(responseBody)['prediction'];
+        return description;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: Failed to analyze image')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+    return null;
   }
 
   @override
@@ -90,7 +119,11 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: _loadGuideQuestions,
+            onPressed: () {
+              setState(() {
+                _guideQuestionsFuture = _loadGuideQuestions();
+              });
+            },
           ),
         ],
       ),
@@ -129,7 +162,26 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: EdgeInsets.all(8.0),
               child: CircularProgressIndicator(),
             ),
-          _buildGuideQuestions(),
+          FutureBuilder<List<String>>(
+            future: _guideQuestionsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const SizedBox.shrink();
+              } else {
+                return _buildGuideQuestions(snapshot.data!);
+              }
+            },
+          ),
           _buildMessageInput(),
         ],
       ),
@@ -202,9 +254,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildGuideQuestions() {
-    if (guideQuestions.isEmpty) return const SizedBox.shrink();
-
+  Widget _buildGuideQuestions(List<String> questions) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -232,7 +282,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
-            ...guideQuestions.map((question) {
+            ...questions.map((question) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: InkWell(

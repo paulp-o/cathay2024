@@ -570,24 +570,24 @@ class _MyHomePageState extends State<MyHomePage> {
           AnimatedOpacity(
             opacity: _sheetState > 0.0 ? 0.0 : 1.0,
             duration: Duration(milliseconds: 300),
-            child: FloatingActionButton.extended(
-              heroTag: 'search',
-              onPressed: () {
-                // Handle text button press
-              },
-              label: Text(
-                'search here',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-                ),
-              ),
-              icon: Icon(Icons.search),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-            ),
+            // child: FloatingActionButton.extended(
+            //   heroTag: 'search',
+            //   onPressed: () {
+            //     // Handle text button press
+            //   },
+            //   label: Text(
+            //     'search here',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //       fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
+            //     ),
+            //   ),
+            //   icon: Icon(Icons.search),
+            //   backgroundColor: Theme.of(context).colorScheme.primary,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(30.0),
+            //   ),
+            // ),
           ),
         ],
       ),
